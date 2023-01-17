@@ -9,8 +9,9 @@ router.route('/')
 router.route('/create')
   .post(postController.addPost);
 
-router.route('/delete/:id')
-  .delete(postController.removePost);
+router.route('/:id')
+  .delete(postController.removePost)
+  .patch(postController.updatePost)
 
 
 module.exports = router;

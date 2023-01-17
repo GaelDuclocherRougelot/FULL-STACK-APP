@@ -6,7 +6,4 @@ module.exports = {
       expiresIn: '24h',
     });
   },
-  async verifyToken(token) {
-    
-  }
 };
