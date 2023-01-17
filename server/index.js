@@ -1,19 +1,17 @@
-import express from "express";
-import mongoose from "mongoose";
-import cors from "cors";
-import dotenv from "dotenv";
+const express = require('express');
+const mongoose = require('mongoose');
+const cors = require('cors');
+require('dotenv').config();
 
-
-// todo import routes
+const postRoute = require('./app/routes/post');
 
 const app = express();
-dotenv.config();
 
 app.use(express.json({limit: "30mb", extended: true}));
 app.use(express.urlencoded({limit: "30mb", extended: true}));
 app.use(cors());
 
-// todo use routes
+app.use('/posts', postRoute);
 
 const port = process.env.PORT || 5000;
 

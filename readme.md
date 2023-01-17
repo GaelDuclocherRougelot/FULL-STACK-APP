@@ -1,6 +1,6 @@
 # MERN Full-stack APP by GaelDuclocherRougelot
 
-This project is a Recipes social media APP, we will able to post, edit, comment, like a recipe.
+This project is a Memories social media APP, we will able to post, edit, comment, like posts.
 
 ## How to set-up this project :
 
