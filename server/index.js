@@ -1,6 +1,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
+const cookieParser = require('cookie-parser');
 require('dotenv').config();
 
 const postRoutes = require('./app/routes/post.routes');
@@ -12,6 +13,7 @@ const app = express();
 app.use(express.json({limit: "30mb", extended: true}));
 app.use(express.urlencoded({limit: "30mb", extended: true}));
 app.use(cors());
+app.use(cookieParser());
 
 app.use('/api/user', userRoutes);
 app.use('/api/post', postRoutes);
