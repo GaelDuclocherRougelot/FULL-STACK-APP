@@ -77,7 +77,7 @@ module.exports = {
             };
             await userModel.findByIdAndUpdate(req.body.idToFollow, update, options).lean().exec();
     
-            return res.status(201).json({message: "User followed successfully"});
+            return res.status(204).json({message: "User followed successfully"});
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
@@ -104,13 +104,12 @@ async unfollow(req, res) {
         update['$pull'] = {
             followers: req.params.id
         };
-
         await userModel.findByIdAndUpdate(req.body.idToUnfollow, update, options).lean().exec();
         
-        res.status(201).json({message: "User unfollowed successfully"});
-  } catch (error) {
-    res.status(500).json({ message: error.message });
-  }
-}
+        res.status(204).json({message: "User unfollowed successfully"});
+      } catch (error) {
+        res.status(500).json({ message: error.message });
+      }
+    }
   
 };
