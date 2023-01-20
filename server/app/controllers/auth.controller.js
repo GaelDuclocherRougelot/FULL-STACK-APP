@@ -1,5 +1,6 @@
 const userModel = require('../models/user.model');
 const jwt = require('jsonwebtoken');
+const errors = require('../utils/errors.utils')
 require('dotenv').config();
 
 const createToken = (id) => {
@@ -15,7 +16,8 @@ module.exports = {
       const user = await userModel.create({ nickname, email, password });
       res.status(201).json({ user: user._id });
     } catch (error) {
-      res.status(500).json(error.message);
+      const errorRegister = errors.registerErrors(error);
+      res.status(500).json({errorRegister});
     }
   },
   async login(req, res) {
@@ -28,7 +30,9 @@ module.exports = {
       res.status(200).json({ user: user._id})
         
       } catch (error) {
-        res.status(500).json(error.message);
+        console.log(error);
+        let errorLogin = errors.loginErrors(error.message);
+        res.status(500).json({errorLogin});
       }
   },
   async logout(req, res) {

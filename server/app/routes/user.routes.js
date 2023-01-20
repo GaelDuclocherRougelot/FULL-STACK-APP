@@ -14,7 +14,7 @@ router.route('/logout')
 
 // user
 router.route('/')
-  .get(authMiddleware.verifyToken, userController.getAllUsers)
+  .get(userController.getAllUsers)
 
 router.route('/:id')
   .get(userController.getOneUser)
