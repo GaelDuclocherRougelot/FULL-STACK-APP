@@ -23,7 +23,7 @@ module.exports = {
   },
   async updateUser(req, res) {
     if(!objectId.isValid(req.params.id)) {
-      return res.status(404).json({ message: `User not found with id : ${req.params.id}` });
+      return res.status(400).json({ message: `User not found with id : ${req.params.id}` });
     };
 
     try {
@@ -43,7 +43,7 @@ module.exports = {
   },
   async deleteUser(req, res) {
     if(!objectId.isValid(req.params.id)) {
-      return res.status(404).json({ message: `User not found with id : ${req.params.id}` });
+      return res.status(400).json({ message: `User not found with id : ${req.params.id}` });
     };
 
     try {
@@ -55,7 +55,7 @@ module.exports = {
   },
   async follow(req, res) {
     if(!objectId.isValid(req.params.id) || !objectId.isValid(req.body.idToFollow)) {
-      return res.status(404).json({ message: `User not found` });
+      return res.status(400).json({ message: `User not found` });
     };
 
     try {
@@ -84,7 +84,7 @@ module.exports = {
 },
 async unfollow(req, res) {
     if(!objectId.isValid(req.params.id) || !objectId.isValid(req.body.idToUnfollow)) {
-      return res.status(404).json({ message: `User not found` });
+      return res.status(400).json({ message: `User not found` });
     };
 
     try {
