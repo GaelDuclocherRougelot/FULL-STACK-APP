@@ -4,8 +4,7 @@ const authController = require('../controllers/auth.controller');
 const userController = require('../controllers/user.controller');
 const uploadController = require('../controllers/upload.controller');
 const authMiddleware = require('../middlewares/auth.middleware');
-const multer = require('multer');
-const upload = multer();
+const { upload } = require('../services/upload.services');
 
 // auth
 router.route('/register')
@@ -30,7 +29,7 @@ router.route('/unfollow/:id')
   .patch(userController.unfollow)
 
 router.route('/upload')
-  .post(upload.single('file'), uploadController.uploadProfile)
+  .post(upload.single('image'), uploadController.uploadProfile)
 
 
 
