@@ -1,6 +1,9 @@
 const postModel = require('../models/post.model');
 const userModel = require('../models/user.model');
 const objectId = require('mongoose').Types.ObjectId;
+const { bufferToDataURI } = require('../utils/file');
+const { uploadToCloudinary } = require('../services/upload.services');
+const cloudinary = require('cloudinary').v2;
 
 module.exports = {
   async getPosts(req, res) {
@@ -11,11 +14,19 @@ module.exports = {
       res.status(500).json(error);
     }
   },
-  async createPost(req, res) {
+  async createPost(req, res, next) {
+    const { file } = req
+    if (!file) throw new ErrorHandler(400, 'Image is required')
+
+    const fileFormat = file.mimetype.split('/')[1]
+    const { base64 } = bufferToDataURI(fileFormat, file.buffer)
+
+    const imageDetails = await uploadToCloudinary(base64, fileFormat)
+
     const post = new postModel({
       posterId: req.body.posterId,
       message: req.body.message,
-      video: req.body.video,
+      picture: imageDetails.url,
       likers: [],
       comments: [],
     });
@@ -31,11 +42,30 @@ module.exports = {
     if (!objectId.isValid(req.params.id)) {
       return res.status(400).json({ message: `Post not found with id : ${req.params.id}` });
     };
+
+      cloudinary.config({
+        cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+        api_key: process.env.CLOUDINARY_KEY,
+        api_secret: process.env.CLOUDINARY_SECRET
+      });
+
     try {
+      const currentPost = await postModel.findById(req.params.id);
+
+      // get name of the uploaded image 
+      const regex = /pictures\/([^;]*).(jpg|png|jpeg)/;
+      const fileName = currentPost.picture.match(regex)
+
+      // delete the image stored in cloudinary
+      cloudinary.uploader
+        .destroy(`pictures/${fileName[1]}`)
+        .then(result => console.log(result));
+
+      // delete the current post
       await postModel.deleteOne({ _id: req.params.id });
       res.status(200).json({ message: "Post deleted" });
     } catch (error) {
-      res.status(500).json(error);
+      res.status(500).json(error.message);
     }
   },
   async updatePost(req, res) {

@@ -17,16 +17,25 @@ const upload = multer({
 const uploadToCloudinary = async (fileString, format, fileName) => {
   try {
     const { uploader } = cloudinary;
-    
-    const res = await uploader.upload(
+    console.log(fileName);
+    if(fileName !== undefined){
+      const res = await uploader.upload(
       `data:image/${format};base64,${fileString}`, {
         folder: "profile_pictures",
         unique_filename: true,
         public_id: fileName
       }
-    );
+      );
+      return res;
+    }else {
+      const res = await uploader.upload(
+        `data:image/${format};base64,${fileString}`, {
+        folder: "pictures",
+      }
+      );
+      return res;
+    }
 
-    return res;
   } catch (error) {
     throw new ErrorHandler(500, error);
   }
