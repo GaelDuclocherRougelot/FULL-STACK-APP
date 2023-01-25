@@ -51,7 +51,7 @@ module.exports = {
 
     try {
       const currentPost = await postModel.findById(req.params.id);
-
+        //TODO si ya pas d'image, ne pas faire le traitement pour l'image
       // get name of the uploaded image 
       const regex = /pictures\/([^;]*).(jpg|png|jpeg)/;
       const fileName = currentPost.picture.match(regex)
