@@ -1,10 +1,11 @@
 const router = require('express').Router();
 const postController = require('../controllers/post.controller');
+const uploadController = require('../controllers/upload.controller');
 const { upload } = require('../services/upload.services');
 
 router.route('/')
   .get(postController.getPosts)
-  .post(upload.single('image'), postController.createPost);
+  .post(upload.single('image'), uploadController.uploadPostImage, postController.createPost);
 
 router.route('/:id')
   .put(postController.updatePost)

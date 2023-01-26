@@ -14,19 +14,11 @@ module.exports = {
       res.status(500).json(error);
     }
   },
-  async createPost(req, res, next) {
-    const { file } = req
-    if (!file) throw new ErrorHandler(400, 'Image is required')
-
-    const fileFormat = file.mimetype.split('/')[1]
-    const { base64 } = bufferToDataURI(fileFormat, file.buffer)
-
-    const imageDetails = await uploadToCloudinary(base64, fileFormat)
+  async createPost(req, res) {
 
     const post = new postModel({
       posterId: req.body.posterId,
       message: req.body.message,
-      picture: imageDetails.url,
       likers: [],
       comments: [],
     });
@@ -50,20 +42,23 @@ module.exports = {
       });
 
     try {
-      const currentPost = await postModel.findById(req.params.id);
-        //TODO si ya pas d'image, ne pas faire le traitement pour l'image
-      // get name of the uploaded image 
-      const regex = /pictures\/([^;]*).(jpg|png|jpeg)/;
-      const fileName = currentPost.picture.match(regex)
+      const currentPost = await postModel.findById(req.params.id).select('picture');
 
-      // delete the image stored in cloudinary
-      cloudinary.uploader
-        .destroy(`pictures/${fileName[1]}`)
-        .then(result => console.log(result));
+        if(currentPost.picture){
+          // get name of the uploaded image 
+          const regex = /pictures\/([^;]*).(jpg|png|jpeg)/;
+          const fileName = currentPost.picture.match(regex)
 
+          // delete the image stored in cloudinary
+          cloudinary.uploader
+            .destroy(`pictures/${fileName[1]}`)
+            .then(result => console.log(result));
+        };
+        
       // delete the current post
       await postModel.deleteOne({ _id: req.params.id });
       res.status(200).json({ message: "Post deleted" });
+
     } catch (error) {
       res.status(500).json(error.message);
     }

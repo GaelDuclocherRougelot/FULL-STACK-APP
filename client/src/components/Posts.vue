@@ -1,25 +1,43 @@
-<script setup>
-import axios from 'axios';
-import {ref, onMounted} from 'vue';
+<script>
+import {ref, onMounted, computed, reactive} from 'vue';
+import { useStore } from 'vuex'
 
-const posts = ref([]);
+export default {
+  setup() {
+    const store = useStore()
 
-onMounted(() => {
-  axios.get('http://localhost:5000/api/post').then((res) => {
-    posts.value = res.data;
-  });
+  return {
+    updatePosts: onMounted(() => store.dispatch('getPosts')),
+    posts: computed(() => store.state.posts)
+  };
+}
+}
 
-});
 
 </script>
 
 <template>
   <div class="posts">
-    <article v-for="(post, index) in posts" :key="index">
-      <div v-if="post.picture !== ''" class="img_container">
-        <img :src=post.picture alt="image post">
+    <article v-for="(post, index) in posts.posts" :key="index">
+      <div class="poster">
+        <h2>Finitix</h2>
+        <p>{{ post.message }}</p>
       </div>
-      <h1>{{ post.message }}</h1>
+      <div class="img__container">
+        <img v-if="post.picture" :src=post.picture alt="image post">
+      </div>
+      <div class="content__container">
+        <div class="post__icones">
+          <font-awesome-icon class="icon" icon="fa-regular fa-heart" size="2x" />
+          <font-awesome-icon class="icon" icon="fa-regular fa-comment" size="2x" />
+        </div>
+        
+      <div class="comments">
+        
+      </div>
+      </div>
+
+
     </article>
   </div>
 </template>
@@ -30,20 +48,80 @@ onMounted(() => {
     height: 100%;
     display: flex;
     flex-direction: column;
-    justify-content: space-around;
     align-items: center;
   }
   article {
-    background-color: rgb(163, 162, 162);
     width: 100%;
-    height: 500px;
     margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    font-size: 1rem;
+    font-family: var(--roboto);
+        box-shadow: -1px 5px 10px -2px rgba(0, 0, 0, 0.39);
+          -webkit-box-shadow: -1px 5px 10px -2px rgba(0, 0, 0, 0.39);
+          -moz-box-shadow: -1px 5px 10px -2px rgba(0, 0, 0, 0.39);
   }
-  .img_container {
+
+  .poster {
     width: 100%;
-    text-align: center;
   }
-    .img_container img {
+  .img__container {
+    width: 100%;
+    max-width: 600px;
+  }
+  .img__container img {
       width: 100%;
+      min-width: 200px;
+  }
+
+  .loader {
+    display: none;
+    background-color: #000;
+    border-radius: 50%;
+    width: 150px;
+    height: 150px;
+    animation-name: spin;
+    animation-duration: 1s;
+    animation-iteration-count: infinite;
+    animation-timing-function: linear;
+  }
+
+@-moz-keyframes spin {
+  100% {
+    -moz-transform: rotate(360deg);
+  }
+}
+
+@-webkit-keyframes spin {
+  100% {
+    -webkit-transform: rotate(360deg);
+  }
+}
+
+@keyframes spin {
+  100% {
+    -webkit-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
+}
+
+  img[lazy=loading] ~ .loader {
+    display: block;
+  }
+
+  .content__container {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+  }
+  .content__container p {
+    padding: 1rem 0 1rem 1rem;
+  }
+
+  .icon{
+    padding: 0.3rem 0.3rem 0 0.3rem;
   }
 </style>

@@ -1,4 +1,5 @@
 const userModel = require('../models/user.model');
+const postModel = require('../models/post.model');
 const { ErrorHandler } = require('../utils/errorHandler.utils');
 const { bufferToDataURI } = require('../utils/file');
 const { uploadToCloudinary } = require('../services/upload.services');
@@ -34,6 +35,30 @@ module.exports = {
     } catch (error) {
       next(new ErrorHandler(error.statusCode || 500, error.message))
     }
+  },
+  async uploadPostImage(req, res, next) {
+    try {
+    const { file } = req
 
+    if (!file) {
+      return next();
+    }
+
+    const fileFormat = file.mimetype.split('/')[1]
+    const { base64 } = bufferToDataURI(fileFormat, file.buffer)
+    const imageDetails = await uploadToCloudinary(base64, fileFormat);
+
+    const post = new postModel({
+      posterId: req.body.posterId,
+      message: req.body.message,
+      picture: imageDetails.url,
+      likers: [],
+      comments: [],
+    });
+      await post.save();
+      res.status(201).json({ message: "Post created" });
+    } catch (error) {
+      ErrorHandler(error.statusCode || 500, error.message);
+    }
   }
 }

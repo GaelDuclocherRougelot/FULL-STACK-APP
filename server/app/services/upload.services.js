@@ -17,7 +17,6 @@ const upload = multer({
 const uploadToCloudinary = async (fileString, format, fileName) => {
   try {
     const { uploader } = cloudinary;
-    console.log(fileName);
     if(fileName !== undefined){
       const res = await uploader.upload(
       `data:image/${format};base64,${fileString}`, {
