@@ -8,7 +8,13 @@ export default {
 
   return {
     updatePosts: onMounted(() => store.dispatch('getPosts')),
-    posts: computed(() => store.state.posts)
+    updateUsers: onMounted(() => store.dispatch('getUsers')),
+    posts: computed(() => {
+      return store.state.posts
+    }),
+    users: computed(() => {
+      return store.state.users
+    })
   };
 }
 }
@@ -19,8 +25,12 @@ export default {
 <template>
   <div class="posts">
     <article v-for="(post, index) in posts.posts" :key="index">
-      <div class="poster">
-        <h2>Finitix</h2>
+      <div v-for="(user, index) in users.users" :key="index" class="user__info">
+          <img v-if="user._id === post.posterId" :src=user.picture width="50" alt="user picture">
+          <h2 v-if="user._id === post.posterId">{{ user.nickname }}</h2>
+          <font-awesome-icon class="follow__icon" v-if="user._id === post.posterId" icon="fa-solid fa-user-plus" size="xs" />
+      </div>
+      <div class="message">
         <p>{{ post.message }}</p>
       </div>
       <div class="img__container">
@@ -63,9 +73,30 @@ export default {
           -moz-box-shadow: -1px 5px 10px -2px rgba(0, 0, 0, 0.39);
   }
 
-  .poster {
+  .user__info {
+    width: 100%;
+    display: flex;
+    align-items: center;
+  }
+
+  .user__info img {
+    margin: 0.6rem;
+    border-radius: 50%;
+  }
+
+  .follow__icon {
+    margin-left: 0.5rem;
+    cursor: pointer;
+  }
+
+  .message {
     width: 100%;
   }
+
+  .message p {
+    padding: 1rem;
+  }
+  
   .img__container {
     width: 100%;
     max-width: 600px;

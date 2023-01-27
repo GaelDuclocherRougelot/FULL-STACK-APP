@@ -1,9 +1,13 @@
 import { createStore } from "vuex";
 import posts from './modules/posts';
+import users from './modules/users';
+
+
 
 const store = createStore({
   modules: {
-    posts
+    posts,
+    users
   }
 })
 

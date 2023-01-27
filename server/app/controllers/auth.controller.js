@@ -27,12 +27,11 @@ module.exports = {
       const user = await userModel.login(email, password);
       const token = createToken(user._id);
       res.cookie('jwt', token, { httpOnly: true, maxAge: maxAge });
-      res.status(200).json({ user: user._id})
+      res.json({ access_token: token})
         
       } catch (error) {
-        console.log(error);
         let errorLogin = errors.loginErrors(error.message);
-        res.status(500).json({errorLogin});
+        res.json({errorLogin});
       }
   },
   async logout(req, res) {

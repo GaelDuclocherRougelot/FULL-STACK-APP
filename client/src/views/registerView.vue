@@ -1,23 +1,22 @@
 <script setup>
 import Header from '../components/Header.vue';
-import Login from '../components/Login.vue';
 </script>
 
 <template>
-  <div class="login">
+  <div class="register">
     <Header />
     <main>
-      <Login />
+      <h1>Inscription</h1>
     </main>
   </div>
 </template>
 
 <style scoped>
-.login {
-    height: 100vh;
-    display: flex;
-    width: 100vw;
-    flex-direction: column;
+.register {
+  height: 100vh;
+  display: flex;
+  width: 100vw;
+  flex-direction: column;
 }
 
 main {

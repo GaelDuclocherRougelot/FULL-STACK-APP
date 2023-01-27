@@ -1,5 +1,15 @@
-<script setup>
+<script>
 
+export default {
+  setup() {
+    const isLogged = localStorage.getItem('token');
+
+
+    return {
+      isLogged
+    }
+  }
+}
 
 </script>
 
@@ -11,7 +21,8 @@
     
     <nav>
       <ul>
-        <li><router-link to="/login" style="text-decoration: none; color: inherit;">Connexion</router-link></li>
+        <li v-if="!isLogged"><router-link to="/login" style="text-decoration: none; color: inherit;">Connexion</router-link></li>
+        <li v-else>Déconnexion</li>
       </ul>
     </nav>
   </header>  
