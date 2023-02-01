@@ -1,5 +1,6 @@
 const userModel = require('../models/user.model');
 const objectId = require('mongoose').Types.ObjectId;
+const session = require('express-session');
 
 module.exports = {
   async getAllUsers(req, res) {
@@ -11,9 +12,10 @@ module.exports = {
     }
   },
   async getOneUser(req, res) {
-    if(!objectId.isValid(req.params.id)) {
+    if (!objectId.isValid(req.params.id)) {
       return res.status(404).json({ message: `User not found with id : ${req.params.id}` });
     };
+
     try {
       const user = await userModel.findById(req.params.id).select('-password');
       res.status(200).json(user);

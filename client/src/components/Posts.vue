@@ -9,6 +9,7 @@ export default {
   return {
     updatePosts: onMounted(() => store.dispatch('getPosts')),
     updateUsers: onMounted(() => store.dispatch('getUsers')),
+    updateUser: onMounted(() => store.dispatch('getMe')),
     posts: computed(() => {
       return store.state.posts
     }),
@@ -18,8 +19,6 @@ export default {
   };
 }
 }
-
-
 </script>
 
 <template>
@@ -104,41 +103,6 @@ export default {
   .img__container img {
       width: 100%;
       min-width: 200px;
-  }
-
-  .loader {
-    display: none;
-    background-color: #000;
-    border-radius: 50%;
-    width: 150px;
-    height: 150px;
-    animation-name: spin;
-    animation-duration: 1s;
-    animation-iteration-count: infinite;
-    animation-timing-function: linear;
-  }
-
-@-moz-keyframes spin {
-  100% {
-    -moz-transform: rotate(360deg);
-  }
-}
-
-@-webkit-keyframes spin {
-  100% {
-    -webkit-transform: rotate(360deg);
-  }
-}
-
-@keyframes spin {
-  100% {
-    -webkit-transform: rotate(360deg);
-    transform: rotate(360deg);
-  }
-}
-
-  img[lazy=loading] ~ .loader {
-    display: block;
   }
 
   .content__container {

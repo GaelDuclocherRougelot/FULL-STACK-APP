@@ -1,12 +1,25 @@
 <script>
+import { computed, ref, onMounted } from '@vue/runtime-core';
+import axios from 'axios';
+import { useRouter, useRoute } from 'vue-router';
 
 export default {
   setup() {
-    const isLogged = localStorage.getItem('token');
+    
+    const router = useRouter();
+    const route = useRoute();
+    let isLogged = ref(localStorage.getItem('token'));
 
+    const logout = computed(() => {
+      localStorage.removeItem('token');
+      router.push('/')
+      return isLogged.value = false;
+    })
 
     return {
-      isLogged
+      isLogged,
+      logout,
+      path: computed(() => route.path)
     }
   }
 }
@@ -22,7 +35,9 @@ export default {
     <nav>
       <ul>
         <li v-if="!isLogged"><router-link to="/login" style="text-decoration: none; color: inherit;">Connexion</router-link></li>
-        <li v-else>Déconnexion</li>
+        <li v-else-if="isLogged" @click="logout">Déconnexion</li>
+        <li v-show="isLogged && path !== '/profile'"><router-link to="/profile" style="text-decoration: none; color: inherit;">Profil</router-link>
+        </li>
       </ul>
     </nav>
   </header>  

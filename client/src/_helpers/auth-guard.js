@@ -9,3 +9,13 @@ export function authGuard(to) {
     return true;
   }
 }
+
+export function authGuardContent(to) {
+  let token = localStorage.getItem('token');
+
+  if (token) {
+    return true;
+  } else {
+    router.push('/login');
+  }
+}

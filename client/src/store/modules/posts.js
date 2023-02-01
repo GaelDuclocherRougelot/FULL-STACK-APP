@@ -1,8 +1,7 @@
 import api from "../../api/api.js";
 
 const state = {
-  posts: [],
-  users: []
+  posts: []
 }
 
 const actions = {
@@ -10,20 +9,12 @@ const actions = {
     api.getAllPosts().then(posts => {
       commit('setPosts', posts)
     })
-  },
-  getUsers({ commit }) {
-    api.getAllUsers().then(users => {
-      commit('setUsers', users)
-    })
   }
 }
 
 const mutations = {
   setPosts(state, posts) {
     state.posts = posts
-  },
-  setUsers(state, users) {
-    state.users = users
   }
 }
 

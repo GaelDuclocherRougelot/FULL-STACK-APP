@@ -9,5 +9,9 @@ const getAllUsers = async () => {
   return await axios.get('http://localhost:5000/api/user').then((response) => response.data);
 };
 
+const getMyProfile = async (id) => {
+  return await axios.get(`http://localhost:5000/api/user/${id}`).then((response) => response.data);
+};
 
-export default { getAllPosts, getAllUsers };
+
+export default { getAllPosts, getAllUsers, getMyProfile };

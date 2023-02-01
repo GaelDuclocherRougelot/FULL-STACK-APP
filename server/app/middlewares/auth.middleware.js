@@ -4,26 +4,27 @@ require('dotenv').config();
 
 module.exports = {
   checkUser(req, res, next) {
-      const token = req.cookies.jwt;
+    const token = req.headers.authorization;
       if(token) {
         jwt.verify(token, process.env.JWT_SECRET, async (err, decoded) => {
           if(err) {
-            req.user = null;
+            req.session.user = null;
             res.clearCookie('jwt');
             next();
             }else{
-              const user = await userModel.findById(decoded.id);
-              req.user = user;
+              const user = await userModel.findById(decoded.id).select('-password');
+              req.session.user = user;
               next();
             }
         });
       }else {
-        req.user = null;
+        // req.session.user = null;
+        // req.session.token = null;
         next();
       }
   },
   requireAuth(req, res, next) {
-    const token = req.cookies.jwt;
+    const token = req.headers.authorization;
   if (token) {
     jwt.verify(token, process.env.TOKEN_SECRET, async (err, decodedToken) => {
       if (err) {
