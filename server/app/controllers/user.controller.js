@@ -29,7 +29,7 @@ module.exports = {
     };
 
     try {
-      await userModel.findOneAndUpdate(
+      const user = await userModel.findOneAndUpdate(
       {_id: req.params.id},
       {
         $set: {
@@ -37,8 +37,8 @@ module.exports = {
         }
       },
       { new: true , upsert: true, setDefaultsOnInsert: true }
-    )
-    res.status(200).json({message: "User updated successfully"});
+    ).select('-password');
+    res.status(200).json(user);
     } catch (error) {
       return res.status(500).json({ message: error.message });
     }

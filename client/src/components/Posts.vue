@@ -10,12 +10,16 @@ export default {
     updatePosts: onMounted(() => store.dispatch('getPosts')),
     updateUsers: onMounted(() => store.dispatch('getUsers')),
     updateUser: onMounted(() => store.dispatch('getMe')),
+    isLogged: computed(() => store.state.users.isLogged),
     posts: computed(() => {
       return store.state.posts
     }),
     users: computed(() => {
       return store.state.users
-    })
+    }),
+    me: computed(() => {
+      return store.state.users.me || ''
+    }),
   };
 }
 }
@@ -27,7 +31,8 @@ export default {
       <div v-for="(user, index) in users.users" :key="index" class="user__info">
           <img v-if="user._id === post.posterId" :src=user.picture width="50" alt="user picture">
           <h2 v-if="user._id === post.posterId">{{ user.nickname }}</h2>
-          <font-awesome-icon class="follow__icon" v-if="user._id === post.posterId" icon="fa-solid fa-user-plus" size="xs" />
+          <font-awesome-icon class="follow__icon" 
+          v-if="user._id === post.posterId && post.posterId !== me._id && isLogged" icon="fa-solid fa-user-plus" size="xs" />
       </div>
       <div class="message">
         <p>{{ post.message }}</p>

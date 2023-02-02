@@ -3,7 +3,7 @@ import VueJwtDecode from "vue-jwt-decode";
 
 const state = {
   users: [],
-  loggedIn: null,
+  isLogged: false,
   me: null
 }
 
@@ -20,8 +20,15 @@ const actions = {
         api.getMyProfile(decoded.id).then(user => {
           commit('setMe', user)
         });
+    }else {
+      return;
     }
-
+  },
+  login({ commit }) {
+    commit('setLoggedIn', true)
+  },
+  logout({ commit }) {
+    commit('setLoggedOut', false)
   }
 }
 
@@ -31,7 +38,13 @@ const mutations = {
   },
   setMe(state, user) {
     state.me = user
-  }
+  },
+  setLoggedIn(state, loggedIn) {
+    state.isLogged = loggedIn
+  },
+  setLoggedOut(state, loggedOut) {
+    state.isLogged = loggedOut
+  },
 }
 
 export default {

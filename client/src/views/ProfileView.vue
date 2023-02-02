@@ -7,7 +7,7 @@ import Profile from '../components/Profile.vue';
     <div class="profile">
       <Header />
       <main>
-        <Profile />
+          <Profile />
       </main>
     </div>
 </template>
@@ -24,4 +24,5 @@ main {
   margin-top: 7rem;
   height: 100%;
 }
+
 </style>

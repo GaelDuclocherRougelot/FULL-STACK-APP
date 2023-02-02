@@ -18,9 +18,6 @@ router.route('/logout')
 router.route('/')
   .get(userController.getAllUsers)
 
-router.route('/me') //!test
-  .get(userController.getOneUser) 
-
 router.route('/:id')
   .get(userController.getOneUser)
   .put(userController.updateUser)

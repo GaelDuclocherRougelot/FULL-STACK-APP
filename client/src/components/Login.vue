@@ -1,6 +1,7 @@
 <script>
 import { computed, ref } from 'vue';
 import { useRouter } from 'vue-router';
+import { useStore } from 'vuex'
 import axios from 'axios';
 
   export default {
@@ -10,6 +11,7 @@ import axios from 'axios';
         password: ''
       });
 
+      const store = useStore();
       const resError = ref({});
       const router = useRouter();
 
@@ -22,6 +24,7 @@ import axios from 'axios';
             resError.value = res.data.errorLogin
           }else {
             localStorage.setItem('token', res.data.access_token);
+            store.dispatch('login');
             router.push('/')
           }
         })
