@@ -1,4 +1,4 @@
-# MERN Full-stack APP by GaelDuclocherRougelot
+Fullstack APP by GaelDuclocherRougelot
 
 This project is a Memories social media APP, we will able to post, edit, comment, like posts.
 
